@@ -1,0 +1,195 @@
+.list-form-block {
+  margin-top: 1.6rem;
+}
+.list-form-block ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.list-form-block ul li {
+  color: var(--Neutral-Colors-Black, #191d23);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+  letter-spacing: 0.32px;
+  margin-bottom: 0.4rem;
+  position: relative;
+  padding-left: 1.6rem;
+}
+.list-form-block ul li:last-child {
+  margin-bottom: 0;
+}
+.list-form-block ul li::before {
+  content: "";
+  position: absolute;
+  border-radius: 10px;
+  background: var(--Blue-Colors-Prussian-Blue, #036);
+  width: 0.8rem;
+  height: 0.8rem;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.list-form-block ul li a {
+  color: var(--Blue-Colors-Dodger-Blue, #2f80ed);
+  font-weight: 500;
+}
+.list-form-block .email-address-field input[type=email] {
+  background: #fafafa;
+}
+.list-form-block .modal .modal-dialog {
+  max-width: 74.6rem;
+}
+.list-form-block .modal .modal-dialog .modal-content {
+  border: 0;
+  padding: 8rem 6rem;
+}
+@media screen and (max-width: 767px) {
+  .list-form-block .modal .modal-dialog .modal-content {
+    padding: 2rem;
+  }
+}
+.list-form-block .modal .modal-dialog .modal-content .modal-header .close-btn {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  position: absolute;
+  right: 2.4rem;
+  top: 2.4rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  z-index: 2;
+}
+@media screen and (max-width: 767px) {
+  .list-form-block .modal .modal-dialog .modal-content .modal-body .gform_confirmation_wrapper {
+    margin-top: 5rem !important;
+  }
+}
+.list-form-block .modal .modal-dialog .modal-content .modal-body .gform_heading .gform_title {
+  color: var(--Blue-Colors-Prussian-Blue, #036);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 36px; /* 150% */
+  letter-spacing: 0.48px;
+  text-transform: capitalize;
+  margin-bottom: 1.6rem;
+  font-family: var(--font-body);
+}
+.list-form-block .modal .modal-dialog .modal-content .modal-body .gform_heading .gform_description {
+  color: var(--Neutral-Colors-Primary-Grey, #4b4b4b);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px; /* 150% */
+  margin-bottom: 4rem;
+}
+.list-form-block .modal .modal-dialog .modal-content .modal-body .gform_heading .gform_required_legend {
+  display: none;
+}
+.list-form-block .modal .modal-dialog .modal-content .modal-body .gform-theme--foundation .gform_fields {
+  row-gap: 2.4rem;
+}
+.list-form-block .modal .modal-dialog .modal-content .modal-body form .gform-body .gfield_label {
+  color: var(--Neutral-Colors-Secondary-Grey, #868686);
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px; /* 150% */
+  margin-bottom: 0.4rem;
+}
+.list-form-block .modal .modal-dialog .modal-content .modal-body form .gform-body .gfield.upload-attachment .gform_fileupload_rules {
+  display: none;
+}
+.list-form-block .modal .modal-dialog .modal-content .modal-body form .gform-body .gfield.upload-attachment .ginput_container {
+  position: relative;
+}
+.list-form-block .modal .modal-dialog .modal-content .modal-body form .gform-body .gfield.upload-attachment .ginput_container input[type=file] {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("upload.svg");
+  background-repeat: no-repeat;
+  background-position: center left;
+  padding: 10px 16px;
+  height: 5.6rem;
+  border: 1px dashed #d0d5dd;
+  box-shadow: none;
+  color: transparent;
+  font-size: 0;
+}
+.list-form-block .modal .modal-dialog .modal-content .modal-body form .gform-body .gfield.upload-attachment .ginput_container input[type=file]::file-selector-button {
+  display: none;
+}
+.list-form-block .modal .modal-dialog .modal-content .modal-body form .gform-body .gfield.upload-attachment .ginput_container .file-name-display {
+  position: absolute;
+  top: 10px;
+  left: 5rem;
+  color: var(--prussian-blue);
+  font-size: 16px;
+  font-weight: 600;
+  pointer-events: none;
+  max-width: calc(100% - 6rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: white;
+  padding: 10px 0;
+  width: 95%;
+  min-height: 30px;
+}
+.list-form-block .modal .modal-dialog .modal-content .modal-body form input[type=text],
+.list-form-block .modal .modal-dialog .modal-content .modal-body form input[type=email],
+.list-form-block .modal .modal-dialog .modal-content .modal-body form input[type=file],
+.list-form-block .modal .modal-dialog .modal-content .modal-body form textarea,
+.list-form-block .modal .modal-dialog .modal-content .modal-body form select,
+.list-form-block .modal .modal-dialog .modal-content .modal-body form .form-select,
+.list-form-block .modal .modal-dialog .modal-content .modal-body form .form-control {
+  border-radius: 4px;
+  border: 1px solid var(--Neutral-Colors-Card-Stroke-Grey, #d0d5dd);
+  padding: 1.2rem 1.6rem;
+  color: var(--prussian-blue);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  min-height: 4.8rem;
+}
+.list-form-block .modal .modal-dialog .modal-content .modal-body form input[type=text]:focus,
+.list-form-block .modal .modal-dialog .modal-content .modal-body form input[type=email]:focus,
+.list-form-block .modal .modal-dialog .modal-content .modal-body form input[type=file]:focus,
+.list-form-block .modal .modal-dialog .modal-content .modal-body form textarea:focus,
+.list-form-block .modal .modal-dialog .modal-content .modal-body form select:focus,
+.list-form-block .modal .modal-dialog .modal-content .modal-body form .form-select:focus,
+.list-form-block .modal .modal-dialog .modal-content .modal-body form .form-control:focus {
+  outline: none;
+}
+.list-form-block .modal .modal-dialog .modal-content .modal-body form input[type=text]::-moz-placeholder, .list-form-block .modal .modal-dialog .modal-content .modal-body form input[type=email]::-moz-placeholder, .list-form-block .modal .modal-dialog .modal-content .modal-body form input[type=file]::-moz-placeholder, .list-form-block .modal .modal-dialog .modal-content .modal-body form textarea::-moz-placeholder, .list-form-block .modal .modal-dialog .modal-content .modal-body form select::-moz-placeholder, .list-form-block .modal .modal-dialog .modal-content .modal-body form .form-select::-moz-placeholder, .list-form-block .modal .modal-dialog .modal-content .modal-body form .form-control::-moz-placeholder {
+  color: var(--Neutral-Colors-Disable-Grey, #e1e4e7);
+}
+.list-form-block .modal .modal-dialog .modal-content .modal-body form input[type=text]::placeholder,
+.list-form-block .modal .modal-dialog .modal-content .modal-body form input[type=email]::placeholder,
+.list-form-block .modal .modal-dialog .modal-content .modal-body form input[type=file]::placeholder,
+.list-form-block .modal .modal-dialog .modal-content .modal-body form textarea::placeholder,
+.list-form-block .modal .modal-dialog .modal-content .modal-body form select::placeholder,
+.list-form-block .modal .modal-dialog .modal-content .modal-body form .form-select::placeholder,
+.list-form-block .modal .modal-dialog .modal-content .modal-body form .form-control::placeholder {
+  color: var(--Neutral-Colors-Disable-Grey, #e1e4e7);
+}
+.list-form-block .modal .modal-dialog .modal-content .modal-body form .gform-footer .gform_button {
+  color: var(--Neutral-Colors-White, #fff);
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px; /* 150% */
+  border-radius: 100px;
+  background: var(--Blue-Colors-Dodger-Blue, #2f80ed);
+  padding: 1.12rem 2.4rem;
+  width: 100%;
+  transition: 0.3s all ease;
+}
+.list-form-block .modal .modal-dialog .modal-content .modal-body form .gform-footer .gform_button:hover {
+  background: var(--prussian-blue);
+}/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,164 @@
+.instruments-block {
+  padding: 6rem 0;
+  background: var(--neutral-grey-6);
+}
+@media (min-width: 992px) {
+  .instruments-block {
+    padding: 12rem 0;
+  }
+}
+.instruments-block .--top-content h2 {
+  margin-bottom: 1.6rem;
+}
+.instruments-block .--top-content p {
+  margin-bottom: 1rem;
+}
+.instruments-block .--top-content p br {
+  display: none;
+}
+@media (min-width: 992px) {
+  .instruments-block .--top-content p br {
+    display: block;
+  }
+}
+.instruments-block .--top-content p strong {
+  font-weight: 600;
+}
+.instruments-block .--card-items {
+  margin-bottom: 4rem;
+  --bs-gutter-y: 4rem;
+}
+@media (min-width: 992px) {
+  .instruments-block .--card-items {
+    margin-bottom: 8rem;
+    --bs-gutter-y: 6rem;
+    --bs-gutter-x: 2rem;
+  }
+}
+.instruments-block .--card-items:last-child {
+  margin-bottom: 0;
+}
+.instruments-block .card {
+  background: white;
+  padding: 2rem;
+  border-radius: 0.8rem;
+  border: 1px solid var(--Neutral-Colors-Disable-Grey, #e1e4e7);
+}
+.instruments-block .card figure {
+  border-radius: 1.4rem;
+  overflow: hidden;
+  margin-bottom: 1.6rem;
+}
+.instruments-block .card figure img {
+  transition: all 0.4s ease-in-out;
+}
+.instruments-block .card figure:hover img {
+  transform: scale(1.15);
+}
+.instruments-block .card .badge-restricted {
+  position: absolute;
+  top: 3.2rem;
+  right: 3.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  z-index: 2;
+  color: var(--Blue-Colors-Prussian-Blue, #036);
+  border-radius: 44px;
+  background: var(--Neutral-Colors-White, #fff);
+  font-family: var(--font-archivo);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px;
+  min-width: 10.1rem;
+  justify-content: center;
+  cursor: pointer;
+}
+.instruments-block .card .badge-restricted svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+}
+.instruments-block .card .badge-restricted .badge-tooltip {
+  position: absolute;
+  top: calc(100% + 1rem);
+  right: 0;
+  width: 20.4rem;
+  padding: 0.8rem;
+  background: var(--Neutral-Colors-White, #fff);
+  border-radius: 12px;
+  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.15);
+  color: var(--Blue-Colors-Prussian-Blue, #036);
+  font-family: var(--font-general-sans);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px;
+  text-align: left;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 10;
+}
+.instruments-block .card .badge-restricted .badge-tooltip::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  right: 2rem;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid var(--Neutral-Colors-White, #fff);
+}
+.instruments-block .card .badge-restricted:hover .badge-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+.instruments-block .card .card-body {
+  padding: 0;
+}
+.instruments-block .card .card-title {
+  margin-bottom: 1.2rem;
+  color: var(--prussian-blue);
+}
+.instruments-block .card .card-text {
+  margin-bottom: 3.2rem;
+}
+.instruments-block .card .card-text p {
+  margin-bottom: 0;
+  font-weight: 400;
+}
+.instruments-block .card .btn-arrow {
+  padding: 0.7rem 2.4rem;
+  font-weight: 500;
+  line-height: 18px;
+  min-width: inherit;
+  color: var(--denim-stroke-selection);
+  border-color: var(--denim-stroke-selection);
+}
+.instruments-block .card .btn-arrow svg {
+  margin-left: 0.8rem;
+}
+.instruments-block .badge-restricted {
+  border-radius: 44px;
+  background: var(--Neutral-Colors-White, #fff);
+  padding: 0.8rem;
+  color: var(--Blue-Colors-Prussian-Blue, #036);
+  font-family: var(--font-archivo);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  position: absolute;
+  top: 3.2rem;
+  right: 3.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 10.1rem;
+  height: 2.7rem;
+  z-index: 1;
+}/*# sourceMappingURL=style.css.map */

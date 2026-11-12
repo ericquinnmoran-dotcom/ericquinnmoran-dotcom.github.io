@@ -1,0 +1,38 @@
+.about-block {
+  position: relative;
+  padding: 6rem 0;
+  overflow: hidden;
+  background-image: url("../../../assets/images/Events-section.jpg");
+  background-size: 170rem;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+@media screen and (min-width: 1025px) {
+  .about-block {
+    background-size: cover;
+  }
+}
+@media (min-width: 992px) {
+  .about-block {
+    padding: 12rem 0;
+  }
+}
+.about-block h3 {
+  margin-bottom: 1.6rem;
+}
+@media (max-width: 767px) {
+  .about-block h3 {
+    line-height: 3.2rem;
+  }
+}
+@media (min-width: 992px) {
+  .about-block h3 {
+    margin-bottom: 4rem;
+  }
+}
+.about-block p {
+  margin-bottom: 0;
+}
+.about-block p strong {
+  font-weight: 600;
+}/*# sourceMappingURL=style.css.map */

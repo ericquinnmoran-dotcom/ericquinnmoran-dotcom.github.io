@@ -1,0 +1,54 @@
+/* Sticky Training Details Styles */
+.training-details-sticky-wrapper {
+  position: relative;
+}
+
+.training-details-sticky {
+  transition: all 0.3s ease;
+}
+
+.training-details-sticky.sticky-enabled {
+  position: sticky;
+  top: 100px; /* Adjust based on your header height */
+  z-index: 10;
+}
+
+/* Ensure proper spacing and layout for sticky elements */
+.training-details-sticky .training-details,
+.training-details-sticky .training-info {
+  margin-bottom: 0;
+}
+
+/* Sticky Event Details Styles */
+.event-details-sticky-wrapper {
+  position: relative;
+}
+
+.event-details-sticky {
+  transition: all 0.3s ease;
+}
+
+.event-details-sticky.sticky-enabled {
+  position: sticky;
+  top: 100px; /* Adjust based on your header height */
+  z-index: 10;
+}
+
+/* Ensure proper spacing and layout for sticky elements */
+.event-details-sticky .event-details-card {
+  margin-bottom: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+  .training-details-sticky.sticky-enabled,
+  .event-details-sticky.sticky-enabled {
+    position: static !important;
+    top: auto !important;
+  }
+  
+  .training-details-sticky-wrapper,
+  .event-details-sticky-wrapper {
+    height: auto !important;
+  }
+}

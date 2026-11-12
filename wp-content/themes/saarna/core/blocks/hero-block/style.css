@@ -1,0 +1,63 @@
+.hero-block {
+  position: relative;
+  padding: 6rem 0;
+  overflow: hidden;
+}
+@media (min-width: 992px) {
+  .hero-block {
+    padding: 4.3rem 0 11rem 0;
+  }
+}
+.hero-block h1 {
+  margin-bottom: 3.2rem;
+}
+.hero-block p {
+  margin-bottom: 2.4rem;
+}
+@media (min-width: 992px) {
+  .hero-block p {
+    margin-bottom: 3.6rem;
+  }
+}
+.hero-block p strong {
+  font-weight: 600;
+}
+@media (max-width: 1300px) {
+  .hero-block .--img-fluid {
+    max-width: 100%;
+    height: auto;
+  }
+}
+@media (max-width: 991px) {
+  .hero-block .btn {
+    margin-bottom: 2.4rem;
+  }
+}
+.hero-block.inner-hero-wrap {
+  padding: 6rem 0;
+}
+@media (min-width: 992px) {
+  .hero-block.inner-hero-wrap {
+    padding: 20.5rem 0 12rem 0;
+    margin-top: -10rem;
+  }
+}
+.hero-block.inner-hero-wrap h1 {
+  margin-bottom: 1.2rem;
+}
+.hero-block.inner-hero-wrap .--hero-bg {
+  position: absolute;
+  top: calc(50% + 4rem);
+  left: calc(50% - 8rem);
+  z-index: -1;
+  transform: translate(0%, -50%);
+  width: 100%;
+}
+@media (max-width: 767px) {
+  .hero-block.inner-hero-wrap .--hero-bg {
+    display: none;
+  }
+}
+.hero-block.inner-hero-wrap .--hero-bg img {
+  max-width: 70%;
+}/*# sourceMappingURL=style.css.map */

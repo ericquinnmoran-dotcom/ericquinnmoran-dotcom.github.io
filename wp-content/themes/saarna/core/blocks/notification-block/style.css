@@ -1,0 +1,33 @@
+.notification-block {
+  padding: 8rem 0rem;
+}
+.notification-block .status-card {
+  border-radius: 8px;
+  border: 1px solid #d0d5dd;
+  background: linear-gradient(139deg, #fefefe 0%, #ebf5ff 99.2%);
+  padding: 6rem 4rem;
+  width: 100%;
+  max-width: 79.2rem;
+  margin: 0 auto;
+}
+.notification-block .status-card h3 {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%;
+}
+.notification-block .status-card p {
+  margin-bottom: 0;
+  font-weight: 600;
+}
+.notification-block .status-card img {
+  margin-bottom: 4rem;
+  max-width: 12rem;
+}
+.notification-block .status-card .btn {
+  margin-top: 4rem;
+  padding: 9.2px 2.4rem;
+}
+.notification-block.payment .registration-header {
+  display: none;
+}/*# sourceMappingURL=style.css.map */

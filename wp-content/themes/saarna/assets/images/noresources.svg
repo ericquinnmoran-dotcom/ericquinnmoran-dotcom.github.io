@@ -1,0 +1,11 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle opacity="0.2" cx="60" cy="60" r="60" fill="#003366"/>
+<circle cx="60.3806" cy="59.6189" r="38.2166" fill="#003366"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M68.75 78.75C74.2728 78.75 78.75 74.2728 78.75 68.75C78.75 63.2272 74.2728 58.75 68.75 58.75C63.2272 58.75 58.75 63.2272 58.75 68.75C58.75 74.2728 63.2272 78.75 68.75 78.75Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M72.5 65L65 72.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M65 65L72.5 72.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M46.25 51.25H63.75" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M46.25 58.75H56.25" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M46.25 66.25H52.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M52.5 73.75H43.75C42.3693 73.75 41.25 72.6307 41.25 71.25V43.75C41.25 42.3693 42.3693 41.25 43.75 41.25H61.465C62.1276 41.2501 62.763 41.5133 63.2317 41.9817L68.0183 46.7683C68.4867 47.237 68.7499 47.8724 68.75 48.535V52.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

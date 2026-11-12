@@ -1,0 +1,21 @@
+.course-block {
+  padding: 60px 0;
+}
+.course-block .course-block-title {
+  margin-bottom: 15px;
+}
+.course-block .course-block-subtitle {
+  margin-bottom: 30px;
+}
+.course-block .card {
+  transition: all 0.3s ease;
+}
+.course-block .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+.course-block .card .card-img-top {
+  height: 200px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}/*# sourceMappingURL=style.css.map */
