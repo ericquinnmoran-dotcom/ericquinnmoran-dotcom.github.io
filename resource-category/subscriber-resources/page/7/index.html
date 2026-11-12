@@ -2,6 +2,41 @@
 <html lang="en-US">
 
 <head>
+<script>/* copy of saarna.org: gives this page the real site's recorded answers (see saarna_publish_prep.py) */
+(function(){
+var V=null, BASE="/resource-category/subscriber-resources/page/7/", IS_VARIANT=false;
+function pairs(src){var a=[];try{if(src==null)return a;if(typeof FormData!=="undefined"&&src instanceof FormData){src.forEach(function(v,n){a.push([n,String(v)]);});return a;}
+new URLSearchParams(typeof src==="string"?src:String(src)).forEach(function(v,n){a.push([n,v]);});}catch(e){}return a;}
+function norm(a,drop){a=a.filter(function(p){return !drop(p[0]);});a.sort(function(x,y){return x[0]<y[0]?-1:x[0]>y[0]?1:(x[1]<y[1]?-1:x[1]>y[1]?1:0);});return a.map(function(p){return p[0]+"="+p[1];}).join("&");}
+function dropA(n){return n.toLowerCase().indexOf("nonce")>-1||n==="user_timezone";}
+function dropQ(n){return /^(utm_.*|fbclid|gclid)$/.test(n);}
+/* 2. page versions the real server builds for some ?queries */
+try{
+ if(IS_VARIANT){var f=(location.hash.match(/^#__from=(.*)$/)||[])[1];history.replaceState(null,"",BASE+(f?decodeURIComponent(f):""));}
+ else if(V&&location.search){var q=norm(pairs(location.search.slice(1)),dropQ);if(V[q]){location.replace(BASE+"__v/"+V[q]+"/#__from="+encodeURIComponent(location.search+location.hash));}}
+}catch(e){}
+/* 1. after-load questions */
+function hex(buf){return Array.prototype.map.call(new Uint8Array(buf),function(b){return("0"+b.toString(16)).slice(-2);}).join("");}
+function lookup(body){var a=pairs(body),act="";a.forEach(function(p){if(p[0]==="action")act=p[1];});
+ if(act==="sr_track_external")return Promise.resolve({s:200,t:"application/json",b:'{"success":true}'});
+ return crypto.subtle.digest("SHA-1",new TextEncoder().encode(norm(a,dropA))).then(function(d){return _f("/_answers/"+hex(d)+".json").then(function(r){return r.ok?r.json():null;});}).catch(function(){return null;});}
+function isAjax(u){return /\/wp-admin\/admin-ajax\.php(\?|$)/.test(String(u));}
+var _f=window.fetch.bind(window);
+window.fetch=function(input,init){var u=typeof input==="string"?input:(input&&input.url),m=((init&&init.method)||(input&&input.method)||"GET").toUpperCase();
+ if(m==="POST"&&isAjax(u)){var body=init&&init.body;return lookup(body).then(function(r){if(r)return new Response(r.b,{status:r.s,headers:{"content-type":r.t}});return _f(input,init);});}
+ return _f(input,init);};
+var P=XMLHttpRequest.prototype,O=P.open,S=P.send,G=P.getAllResponseHeaders,R=P.getResponseHeader,H=P.setRequestHeader;
+P.open=function(m,u){this.__aj=String(m).toUpperCase()==="POST"&&isAjax(u);this.__args=arguments;return O.apply(this,arguments);};
+P.setRequestHeader=function(){if(this.__fake)return;return H.apply(this,arguments);};
+P.send=function(b){if(!this.__aj)return S.apply(this,arguments);var x=this,args=arguments;
+ lookup(typeof b==="string"?b:b).then(function(r){if(!r)return S.apply(x,args);x.__fake=r;
+  function def(n,v){try{Object.defineProperty(x,n,{value:v,configurable:true});}catch(e){}}
+  def("readyState",4);def("status",r.s);def("statusText","OK");def("responseText",r.b);def("response",r.b);def("responseURL",location.origin+"/wp-admin/admin-ajax.php");
+  try{x.onreadystatechange&&x.onreadystatechange();}catch(e){}
+  ["readystatechange","load","loadend"].forEach(function(t){try{if(t==="load"&&x.onload)x.onload();if(t==="loadend"&&x.onloadend)x.onloadend();x.dispatchEvent(new Event(t));}catch(e){}});});};
+P.getAllResponseHeaders=function(){return this.__fake?"content-type: "+this.__fake.t+"\r\n":G.apply(this,arguments);};
+P.getResponseHeader=function(n){return this.__fake?(String(n).toLowerCase()==="content-type"?this.__fake.t:null):R.apply(this,arguments);};
+})();</script>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">

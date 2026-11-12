@@ -2,6 +2,41 @@
 <html lang="en-US">
 
 <head>
+<script>/* copy of saarna.org: gives this page the real site's recorded answers (see saarna_publish_prep.py) */
+(function(){
+var V={"training_lang=all": "2ebda35d0f32d696c65e4591458dad0b23b52774", "training_lang=english": "51f3f7aad26a47a5c3b93e083199f069f6a52f5f", "training_lang=french": "6dcebbe870529bac37a646c2d6e3b7a79c9c44a3", "event_lang=all": "68f4a160a7ebbf088a062044e6c43cf266235a6a", "event_lang=english": "227cf1280fddde33c92194964d7ef41f50dd5495", "event_lang=french": "0062b46ee8ca4eba0e10a69b65050eeb06baf08c"}, BASE="/trainings-events/", IS_VARIANT=false;
+function pairs(src){var a=[];try{if(src==null)return a;if(typeof FormData!=="undefined"&&src instanceof FormData){src.forEach(function(v,n){a.push([n,String(v)]);});return a;}
+new URLSearchParams(typeof src==="string"?src:String(src)).forEach(function(v,n){a.push([n,v]);});}catch(e){}return a;}
+function norm(a,drop){a=a.filter(function(p){return !drop(p[0]);});a.sort(function(x,y){return x[0]<y[0]?-1:x[0]>y[0]?1:(x[1]<y[1]?-1:x[1]>y[1]?1:0);});return a.map(function(p){return p[0]+"="+p[1];}).join("&");}
+function dropA(n){return n.toLowerCase().indexOf("nonce")>-1||n==="user_timezone";}
+function dropQ(n){return /^(utm_.*|fbclid|gclid)$/.test(n);}
+/* 2. page versions the real server builds for some ?queries */
+try{
+ if(IS_VARIANT){var f=(location.hash.match(/^#__from=(.*)$/)||[])[1];history.replaceState(null,"",BASE+(f?decodeURIComponent(f):""));}
+ else if(V&&location.search){var q=norm(pairs(location.search.slice(1)),dropQ);if(V[q]){location.replace(BASE+"__v/"+V[q]+"/#__from="+encodeURIComponent(location.search+location.hash));}}
+}catch(e){}
+/* 1. after-load questions */
+function hex(buf){return Array.prototype.map.call(new Uint8Array(buf),function(b){return("0"+b.toString(16)).slice(-2);}).join("");}
+function lookup(body){var a=pairs(body),act="";a.forEach(function(p){if(p[0]==="action")act=p[1];});
+ if(act==="sr_track_external")return Promise.resolve({s:200,t:"application/json",b:'{"success":true}'});
+ return crypto.subtle.digest("SHA-1",new TextEncoder().encode(norm(a,dropA))).then(function(d){return _f("/_answers/"+hex(d)+".json").then(function(r){return r.ok?r.json():null;});}).catch(function(){return null;});}
+function isAjax(u){return /\/wp-admin\/admin-ajax\.php(\?|$)/.test(String(u));}
+var _f=window.fetch.bind(window);
+window.fetch=function(input,init){var u=typeof input==="string"?input:(input&&input.url),m=((init&&init.method)||(input&&input.method)||"GET").toUpperCase();
+ if(m==="POST"&&isAjax(u)){var body=init&&init.body;return lookup(body).then(function(r){if(r)return new Response(r.b,{status:r.s,headers:{"content-type":r.t}});return _f(input,init);});}
+ return _f(input,init);};
+var P=XMLHttpRequest.prototype,O=P.open,S=P.send,G=P.getAllResponseHeaders,R=P.getResponseHeader,H=P.setRequestHeader;
+P.open=function(m,u){this.__aj=String(m).toUpperCase()==="POST"&&isAjax(u);this.__args=arguments;return O.apply(this,arguments);};
+P.setRequestHeader=function(){if(this.__fake)return;return H.apply(this,arguments);};
+P.send=function(b){if(!this.__aj)return S.apply(this,arguments);var x=this,args=arguments;
+ lookup(typeof b==="string"?b:b).then(function(r){if(!r)return S.apply(x,args);x.__fake=r;
+  function def(n,v){try{Object.defineProperty(x,n,{value:v,configurable:true});}catch(e){}}
+  def("readyState",4);def("status",r.s);def("statusText","OK");def("responseText",r.b);def("response",r.b);def("responseURL",location.origin+"/wp-admin/admin-ajax.php");
+  try{x.onreadystatechange&&x.onreadystatechange();}catch(e){}
+  ["readystatechange","load","loadend"].forEach(function(t){try{if(t==="load"&&x.onload)x.onload();if(t==="loadend"&&x.onloadend)x.onloadend();x.dispatchEvent(new Event(t));}catch(e){}});});};
+P.getAllResponseHeaders=function(){return this.__fake?"content-type: "+this.__fake.t+"\r\n":G.apply(this,arguments);};
+P.getResponseHeader=function(n){return this.__fake?(String(n).toLowerCase()==="content-type"?this.__fake.t:null):R.apply(this,arguments);};
+})();</script>
 	<meta charset="UTF-8">
 <script>
 var gform;gform||(document.addEventListener("gform_main_scripts_loaded",function(){gform.scriptsLoaded=!0}),document.addEventListener("gform/theme/scripts_loaded",function(){gform.themeScriptsLoaded=!0}),window.addEventListener("DOMContentLoaded",function(){gform.domLoaded=!0}),gform={domLoaded:!1,scriptsLoaded:!1,themeScriptsLoaded:!1,isFormEditor:()=>"function"==typeof InitializeEditor,callIfLoaded:function(o){return!(!gform.domLoaded||!gform.scriptsLoaded||!gform.themeScriptsLoaded&&!gform.isFormEditor()||(gform.isFormEditor()&&console.warn("The use of gform.initializeOnLoaded() is deprecated in the form editor context and will be removed in Gravity Forms 3.1."),o(),0))},initializeOnLoaded:function(o){gform.callIfLoaded(o)||(document.addEventListener("gform_main_scripts_loaded",()=>{gform.scriptsLoaded=!0,gform.callIfLoaded(o)}),document.addEventListener("gform/theme/scripts_loaded",()=>{gform.themeScriptsLoaded=!0,gform.callIfLoaded(o)}),window.addEventListener("DOMContentLoaded",()=>{gform.domLoaded=!0,gform.callIfLoaded(o)}))},hooks:{action:{},filter:{}},addAction:function(o,r,e,t){gform.addHook("action",o,r,e,t)},addFilter:function(o,r,e,t){gform.addHook("filter",o,r,e,t)},doAction:function(o){gform.doHook("action",o,arguments)},applyFilters:function(o){return gform.doHook("filter",o,arguments)},removeAction:function(o,r){gform.removeHook("action",o,r)},removeFilter:function(o,r,e){gform.removeHook("filter",o,r,e)},addHook:function(o,r,e,t,n){null==gform.hooks[o][r]&&(gform.hooks[o][r]=[]);var d=gform.hooks[o][r];null==n&&(n=r+"_"+d.length),gform.hooks[o][r].push({tag:n,callable:e,priority:t=null==t?10:t})},doHook:function(r,o,e){var t;if(e=Array.prototype.slice.call(e,1),null!=gform.hooks[r][o]&&((o=gform.hooks[r][o]).sort(function(o,r){return o.priority-r.priority}),o.forEach(function(o){"function"!=typeof(t=o.callable)&&(t=window[t]),"action"==r?t.apply(null,e):e[0]=t.apply(null,e)})),"filter"==r)return e[0]},removeHook:function(o,r,t,n){var e;null!=gform.hooks[o][r]&&(e=(e=gform.hooks[o][r]).filter(function(o,r,e){return!!(null!=n&&n!=o.tag||null!=t&&t!=o.priority)}),gform.hooks[o][r]=e)}});
