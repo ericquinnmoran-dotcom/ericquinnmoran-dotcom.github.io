@@ -11,9 +11,15 @@ function norm(a,drop){a=a.filter(function(p){return !drop(p[0]);});a.sort(functi
 function dropA(n){return n.toLowerCase().indexOf("nonce")>-1||n==="user_timezone";}
 function dropQ(n){return /^(utm_.*|fbclid|gclid)$/.test(n);}
 /* 2. page versions the real server builds for some ?queries */
+function skey(){return "__sy:"+location.pathname+location.search;}
 try{
- if(IS_VARIANT){var f=(location.hash.match(/^#__from=(.*)$/)||[])[1];history.replaceState(null,"",BASE+(f?decodeURIComponent(f):""));}
- else if(V&&location.search){var q=norm(pairs(location.search.slice(1)),dropQ);if(V[q]){location.replace(BASE+"__v/"+V[q]+"/#__from="+encodeURIComponent(location.search+location.hash));}}
+ if(IS_VARIANT){var mm=location.hash.match(/^#__from=([^&]*)(&__r=1)?$/)||[],f=mm[1],rl=!!mm[2];history.replaceState(null,"",BASE+(f?decodeURIComponent(f):""));
+  /* a reload on the real site puts the visitor back where they were: do the same */
+  if(rl){var sy=+(sessionStorage.getItem(skey())||0);if(sy)window.addEventListener("load",function(){setTimeout(function(){window.scrollTo(0,sy);},0);});}}
+ else if(V&&location.search){var q=norm(pairs(location.search.slice(1)),dropQ);if(V[q]){var nt=(performance.getEntriesByType&&performance.getEntriesByType("navigation")[0]||{}).type;
+  window.__hop=1;location.replace(BASE+"__v/"+V[q]+"/#__from="+encodeURIComponent(location.search+location.hash)+(nt==="reload"?"&__r=1":""));}}
+ /* remember where the visitor was (not on the in-between hop, which would overwrite it with the top) */
+ if(V||IS_VARIANT)window.addEventListener("pagehide",function(){if(window.__hop)return;try{sessionStorage.setItem(skey(),String(window.scrollY||0));}catch(e){}});
 }catch(e){}
 /* 1. after-load questions */
 function hex(buf){return Array.prototype.map.call(new Uint8Array(buf),function(b){return("0"+b.toString(16)).slice(-2);}).join("");}
@@ -25,6 +31,8 @@ var _f=window.fetch.bind(window);
 window.fetch=function(input,init){var u=typeof input==="string"?input:(input&&input.url),m=((init&&init.method)||(input&&input.method)||"GET").toUpperCase();
  if(m==="POST"&&isAjax(u)){var body=init&&init.body;return lookup(body).then(function(r){if(r)return new Response(r.b,{status:r.s,headers:{"content-type":r.t}});return _f(input,init);});}
  return _f(input,init);};
+/* the view counter is also sent as a beacon: answer it here, send nothing */
+if(navigator.sendBeacon){var _b=navigator.sendBeacon.bind(navigator);navigator.sendBeacon=function(u,data){try{if(isAjax(u)&&!(typeof Blob!=="undefined"&&data instanceof Blob)){var act="";pairs(data).forEach(function(p){if(p[0]==="action")act=p[1];});if(act==="sr_track_external")return true;}}catch(e){}return _b(u,data);};}
 var P=XMLHttpRequest.prototype,O=P.open,S=P.send,G=P.getAllResponseHeaders,R=P.getResponseHeader,H=P.setRequestHeader;
 P.open=function(m,u){this.__aj=String(m).toUpperCase()==="POST"&&isAjax(u);this.__args=arguments;return O.apply(this,arguments);};
 P.setRequestHeader=function(){if(this.__fake)return;return H.apply(this,arguments);};
@@ -928,7 +936,7 @@ var wcpayAssets = {"url":"/wp-content/plugins/woocommerce-payments/dist/"};
                                                                             <span class="info-label">Presenter Email</span>
                                                                         </div>
                                                                         <div class="info-content">
-                                                                            <span class="info-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="82fbedeee3ece6e3ace4e7f0ece3ece6e7f8c2f1e3e3f0ece3acedf0e5">[email&#160;protected]</a></span>
+                                                                            <span class="info-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="126b7d7e737c76733c7477607c737c76776852617373607c733c7d6075">[email&#160;protected]</a></span>
                                                                         </div>
                                                                     </div>
                                                                 
@@ -1044,9 +1052,9 @@ var wcpayAssets = {"url":"/wp-content/plugins/woocommerce-payments/dist/"};
             <input type='hidden' class='gform_hidden' name='is_submit_1' value='1' />
             <input type='hidden' class='gform_hidden' name='gform_submit' value='1' />
             
-            <input type='hidden' class='gform_hidden' name='gform_currency' data-currency='USD' value='NzbAE0bl5101/HIHzoVMjK/D7snWn9K98J/+wU8UyTb0Zm6KKo1kiSDoeA8nUqObnYwlAbi6dcQ76hU7EKMfxLbbAOFbbU9CFzLHE6+4roUdPwc=' />
+            <input type='hidden' class='gform_hidden' name='gform_currency' data-currency='USD' value='TXxfE9hse2b0w9+ylKQDo6zael4QPOlNbTQfQTQa/7vPkBf79OiWOo+B3s52+dKkxKpQIAIscBULpGoPqmT7gOzarB5UMuCpI9cQt4j2PlaxuQs=' />
             <input type='hidden' class='gform_hidden' name='gform_unique_id' value='' />
-            <input type='hidden' class='gform_hidden' name='state_1' value='WyJ7XCIyXCI6W1wiY2M3ZDk1NDJlZDNiYjNkNzM1NzY3Yjk4OGFkMmFjYmNcIixcIjliYjlhNmU0YjZlYmRlMjc3MzIzZmE4Yzg2MDZiY2Q1XCJdLFwiZ2Zvcm1fc3VibWlzc2lvbl9tZXRob2RcIjpbXCI4M2Y4ZGRhNzhlM2U3ZTJkMzkyMWEzOTQ3MzU1YTA0NFwiLFwiYmM1ZTA0NDEwNWVmZWQ4ZDViZjk1NjI5NDRkYjlhZDRcIixcIjZmYmViZDZhZjBkYmU1Y2MzNmJiNjEwNWIwNzk0MDMxXCJdLFwiZ2Zvcm1fdGhlbWVcIjpcImNhNTQ0YmY4OGM3NTcwM2NhM2ZiZDg3MzRiM2EzYjQzXCIsXCJnZm9ybV9zdHlsZV9zZXR0aW5nc1wiOlwiZTkxYjhiYjZjNDU5ZmVmYWVlNGI0ZThjZjRmNzA0ZTZcIixcImZvcm1faWRcIjpcIjU4ZjQ4NmRmZjQ1MzY5OTk5ZDYyYTRjMTk5YmMwMzVhXCIsXCJ1cmxcIjpcImE1NWVhY2VkYzU4YTVmNGFmMzEwMzc4NmVlYzU2NzI2XCIsXCJzdGF0ZV90aW1lc3RhbXBcIjpcIjljN2Y5ZDM2ZTgzMWFlNGE2NTBmMzQ1N2UxNzA3ODAzXCJ9IiwiMTU5ZWMzYTlmNTMxMTdlOTk3MzZjYjllNzI5NTI1MzMiLDE3OTQ1MDA3NTNd' />
+            <input type='hidden' class='gform_hidden' name='state_1' value='WyJ7XCIyXCI6W1wiY2M3ZDk1NDJlZDNiYjNkNzM1NzY3Yjk4OGFkMmFjYmNcIixcIjliYjlhNmU0YjZlYmRlMjc3MzIzZmE4Yzg2MDZiY2Q1XCJdLFwiZ2Zvcm1fc3VibWlzc2lvbl9tZXRob2RcIjpbXCI4M2Y4ZGRhNzhlM2U3ZTJkMzkyMWEzOTQ3MzU1YTA0NFwiLFwiYmM1ZTA0NDEwNWVmZWQ4ZDViZjk1NjI5NDRkYjlhZDRcIixcIjZmYmViZDZhZjBkYmU1Y2MzNmJiNjEwNWIwNzk0MDMxXCJdLFwiZ2Zvcm1fdGhlbWVcIjpcImNhNTQ0YmY4OGM3NTcwM2NhM2ZiZDg3MzRiM2EzYjQzXCIsXCJnZm9ybV9zdHlsZV9zZXR0aW5nc1wiOlwiZTkxYjhiYjZjNDU5ZmVmYWVlNGI0ZThjZjRmNzA0ZTZcIixcImZvcm1faWRcIjpcIjU4ZjQ4NmRmZjQ1MzY5OTk5ZDYyYTRjMTk5YmMwMzVhXCIsXCJ1cmxcIjpcImE1NWVhY2VkYzU4YTVmNGFmMzEwMzc4NmVlYzU2NzI2XCIsXCJzdGF0ZV90aW1lc3RhbXBcIjpcIjQ5NGE1MDFlNDZiMjMzYzQ3NzlhODYyODU2MTYzODE2XCJ9IiwiMGExZTNlYWYxMjdiMWUzODA2OTZhMDIzYmJlOGIyZWYiLDE3OTQ1MjA1MDJd' />
             <input type='hidden' autocomplete='off' class='gform_hidden' name='gform_target_page_number_1' id='gform_target_page_number_1' value='0' />
             <input type='hidden' autocomplete='off' class='gform_hidden' name='gform_source_page_number_1' id='gform_source_page_number_1' value='1' />
             <input type='hidden' name='gform_field_values' value='' />
@@ -1107,7 +1115,7 @@ gform.initializeOnLoaded( function() {jQuery('#gform_ajax_frame_1').on('load',fu
 <a href="tel:+1 (855) 955-DATA">+1 (855) 955-DATA</a>, (<a href="tel:855-955-3282">855-955-3282</a>)</p>
 <p><strong>International Calls (Tax Applied)</strong><br />
 <a href="tel:+1 (234) 567-9474">+1 (234) 567-9474</a></p>
-<p><a href="/cdn-cgi/l/email-protection#f0999e969fb0839191829e91de9f8297"><span class="__cf_email__" data-cfemail="5c35323a331c2f3d3d2e323d72332e3b">[email&#160;protected]</span></a></p>
+<p><a href="/cdn-cgi/l/email-protection#82ebece4edc2f1e3e3f0ece3acedf0e5"><span class="__cf_email__" data-cfemail="6a03040c052a190b0b18040b4405180d">[email&#160;protected]</span></a></p>
 <p>&nbsp;</p>
 							</div>
 						
@@ -1172,7 +1180,7 @@ gform.initializeOnLoaded( function() {jQuery('#gform_ajax_frame_1').on('load',fu
 <script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/5f7d253bef7f1e19277c79f5a/35136d545a1ee690015b63764.js");</script>        <script type="text/javascript">
         window.mcPixel = window.mcPixel || {};
         window.mcPixel._handled = {};
-        window.mcPixel.cartId = 't_29a770ae71ba17230a2214e826d8e5';
+        window.mcPixel.cartId = 't_83a2a9b06f0f4b8d82b9ebfb9500c4';
         window.mcPixel.parentMap = {};
                 window.mcPixel.data = {"product":{"id":"9193","productId":"9193","title":"Risk Matrix 2000 Training - October 2026","price":350,"currency":"CAD","sku":"","imageUrl":"","productUrl":"/product/risk-matrix-2000-training-october-2026/","vendor":"","categories":["English","Trainings"]},"events":["PRODUCT_VIEWED"]};
                 </script>
@@ -1382,7 +1390,7 @@ var e="script#wp-emoji-settings",t=document.querySelector(e);if(!(t instanceof H
 //# sourceURL=/wp-includes/js/wp-emoji-loader.min.js
 </script>
 <script type="application/json" fncls="fnparams-dede7cc5-15fd-4c75-a9f4-36c430ee3a99">
-	{"f":"95526561f96342a3b7785a82ab689405","s":"_9193","sandbox":false}</script>
+	{"f":"26f7f233b82f43d09487ae9c1b85f039","s":"_9193","sandbox":false}</script>
 <script>
 gform.initializeOnLoaded( function() { jQuery(document).on('gform_post_render', function(event, formId, currentPage){if(formId == 1) {if(typeof Placeholders != 'undefined'){
                         Placeholders.enable();
@@ -1392,4 +1400,4 @@ gform.initializeOnLoaded( function() { jQuery(document).on('gform_post_render', 
 gform.initializeOnLoaded( function() {jQuery(document).trigger("gform_pre_post_render", [{ formId: "1", currentPage: "1", abort: function() { this.preventDefault(); } }]);        if (event && event.defaultPrevented) {                return;        }        const gformWrapperDiv = document.getElementById( "gform_wrapper_1" );        if ( gformWrapperDiv ) {            const visibilitySpan = document.createElement( "span" );            visibilitySpan.id = "gform_visibility_test_1";            gformWrapperDiv.insertAdjacentElement( "afterend", visibilitySpan );        }        const visibilityTestDiv = document.getElementById( "gform_visibility_test_1" );        let postRenderFired = false;        function triggerPostRender() {            if ( postRenderFired ) {                return;            }            postRenderFired = true;            gform.core.triggerPostRenderEvents( 1, 1 );            if ( visibilityTestDiv ) {                visibilityTestDiv.parentNode.removeChild( visibilityTestDiv );            }        }        function debounce( func, wait, immediate ) {            var timeout;            return function() {                var context = this, args = arguments;                var later = function() {                    timeout = null;                    if ( !immediate ) func.apply( context, args );                };                var callNow = immediate && !timeout;                clearTimeout( timeout );                timeout = setTimeout( later, wait );                if ( callNow ) func.apply( context, args );            };        }        const debouncedTriggerPostRender = debounce( function() {            triggerPostRender();        }, 200 );        if ( visibilityTestDiv && visibilityTestDiv.offsetParent === null ) {            const observer = new MutationObserver( ( mutations ) => {                mutations.forEach( ( mutation ) => {                    if ( mutation.type === 'attributes' && visibilityTestDiv.offsetParent !== null ) {                        debouncedTriggerPostRender();                        observer.disconnect();                    }                });            });            observer.observe( document.body, {                attributes: true,                childList: false,                subtree: true,                attributeFilter: [ 'style', 'class' ],            });        } else {            triggerPostRender();        }    } );
 </script>
 </body>
-</html><!-- Cache Enabler by KeyCDN @ Thu, 12 Nov 2026 16:25:53 GMT (https-index.html) -->
+</html><!-- Cache Enabler by KeyCDN @ Thu, 12 Nov 2026 21:55:02 GMT (https-index.html) -->

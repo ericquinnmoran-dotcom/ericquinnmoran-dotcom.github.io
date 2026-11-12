@@ -11,9 +11,15 @@ function norm(a,drop){a=a.filter(function(p){return !drop(p[0]);});a.sort(functi
 function dropA(n){return n.toLowerCase().indexOf("nonce")>-1||n==="user_timezone";}
 function dropQ(n){return /^(utm_.*|fbclid|gclid)$/.test(n);}
 /* 2. page versions the real server builds for some ?queries */
+function skey(){return "__sy:"+location.pathname+location.search;}
 try{
- if(IS_VARIANT){var f=(location.hash.match(/^#__from=(.*)$/)||[])[1];history.replaceState(null,"",BASE+(f?decodeURIComponent(f):""));}
- else if(V&&location.search){var q=norm(pairs(location.search.slice(1)),dropQ);if(V[q]){location.replace(BASE+"__v/"+V[q]+"/#__from="+encodeURIComponent(location.search+location.hash));}}
+ if(IS_VARIANT){var mm=location.hash.match(/^#__from=([^&]*)(&__r=1)?$/)||[],f=mm[1],rl=!!mm[2];history.replaceState(null,"",BASE+(f?decodeURIComponent(f):""));
+  /* a reload on the real site puts the visitor back where they were: do the same */
+  if(rl){var sy=+(sessionStorage.getItem(skey())||0);if(sy)window.addEventListener("load",function(){setTimeout(function(){window.scrollTo(0,sy);},0);});}}
+ else if(V&&location.search){var q=norm(pairs(location.search.slice(1)),dropQ);if(V[q]){var nt=(performance.getEntriesByType&&performance.getEntriesByType("navigation")[0]||{}).type;
+  window.__hop=1;location.replace(BASE+"__v/"+V[q]+"/#__from="+encodeURIComponent(location.search+location.hash)+(nt==="reload"?"&__r=1":""));}}
+ /* remember where the visitor was (not on the in-between hop, which would overwrite it with the top) */
+ if(V||IS_VARIANT)window.addEventListener("pagehide",function(){if(window.__hop)return;try{sessionStorage.setItem(skey(),String(window.scrollY||0));}catch(e){}});
 }catch(e){}
 /* 1. after-load questions */
 function hex(buf){return Array.prototype.map.call(new Uint8Array(buf),function(b){return("0"+b.toString(16)).slice(-2);}).join("");}
@@ -25,6 +31,8 @@ var _f=window.fetch.bind(window);
 window.fetch=function(input,init){var u=typeof input==="string"?input:(input&&input.url),m=((init&&init.method)||(input&&input.method)||"GET").toUpperCase();
  if(m==="POST"&&isAjax(u)){var body=init&&init.body;return lookup(body).then(function(r){if(r)return new Response(r.b,{status:r.s,headers:{"content-type":r.t}});return _f(input,init);});}
  return _f(input,init);};
+/* the view counter is also sent as a beacon: answer it here, send nothing */
+if(navigator.sendBeacon){var _b=navigator.sendBeacon.bind(navigator);navigator.sendBeacon=function(u,data){try{if(isAjax(u)&&!(typeof Blob!=="undefined"&&data instanceof Blob)){var act="";pairs(data).forEach(function(p){if(p[0]==="action")act=p[1];});if(act==="sr_track_external")return true;}}catch(e){}return _b(u,data);};}
 var P=XMLHttpRequest.prototype,O=P.open,S=P.send,G=P.getAllResponseHeaders,R=P.getResponseHeader,H=P.setRequestHeader;
 P.open=function(m,u){this.__aj=String(m).toUpperCase()==="POST"&&isAjax(u);this.__args=arguments;return O.apply(this,arguments);};
 P.setRequestHeader=function(){if(this.__fake)return;return H.apply(this,arguments);};

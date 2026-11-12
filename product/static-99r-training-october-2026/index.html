@@ -11,9 +11,15 @@ function norm(a,drop){a=a.filter(function(p){return !drop(p[0]);});a.sort(functi
 function dropA(n){return n.toLowerCase().indexOf("nonce")>-1||n==="user_timezone";}
 function dropQ(n){return /^(utm_.*|fbclid|gclid)$/.test(n);}
 /* 2. page versions the real server builds for some ?queries */
+function skey(){return "__sy:"+location.pathname+location.search;}
 try{
- if(IS_VARIANT){var f=(location.hash.match(/^#__from=(.*)$/)||[])[1];history.replaceState(null,"",BASE+(f?decodeURIComponent(f):""));}
- else if(V&&location.search){var q=norm(pairs(location.search.slice(1)),dropQ);if(V[q]){location.replace(BASE+"__v/"+V[q]+"/#__from="+encodeURIComponent(location.search+location.hash));}}
+ if(IS_VARIANT){var mm=location.hash.match(/^#__from=([^&]*)(&__r=1)?$/)||[],f=mm[1],rl=!!mm[2];history.replaceState(null,"",BASE+(f?decodeURIComponent(f):""));
+  /* a reload on the real site puts the visitor back where they were: do the same */
+  if(rl){var sy=+(sessionStorage.getItem(skey())||0);if(sy)window.addEventListener("load",function(){setTimeout(function(){window.scrollTo(0,sy);},0);});}}
+ else if(V&&location.search){var q=norm(pairs(location.search.slice(1)),dropQ);if(V[q]){var nt=(performance.getEntriesByType&&performance.getEntriesByType("navigation")[0]||{}).type;
+  window.__hop=1;location.replace(BASE+"__v/"+V[q]+"/#__from="+encodeURIComponent(location.search+location.hash)+(nt==="reload"?"&__r=1":""));}}
+ /* remember where the visitor was (not on the in-between hop, which would overwrite it with the top) */
+ if(V||IS_VARIANT)window.addEventListener("pagehide",function(){if(window.__hop)return;try{sessionStorage.setItem(skey(),String(window.scrollY||0));}catch(e){}});
 }catch(e){}
 /* 1. after-load questions */
 function hex(buf){return Array.prototype.map.call(new Uint8Array(buf),function(b){return("0"+b.toString(16)).slice(-2);}).join("");}
@@ -25,6 +31,8 @@ var _f=window.fetch.bind(window);
 window.fetch=function(input,init){var u=typeof input==="string"?input:(input&&input.url),m=((init&&init.method)||(input&&input.method)||"GET").toUpperCase();
  if(m==="POST"&&isAjax(u)){var body=init&&init.body;return lookup(body).then(function(r){if(r)return new Response(r.b,{status:r.s,headers:{"content-type":r.t}});return _f(input,init);});}
  return _f(input,init);};
+/* the view counter is also sent as a beacon: answer it here, send nothing */
+if(navigator.sendBeacon){var _b=navigator.sendBeacon.bind(navigator);navigator.sendBeacon=function(u,data){try{if(isAjax(u)&&!(typeof Blob!=="undefined"&&data instanceof Blob)){var act="";pairs(data).forEach(function(p){if(p[0]==="action")act=p[1];});if(act==="sr_track_external")return true;}}catch(e){}return _b(u,data);};}
 var P=XMLHttpRequest.prototype,O=P.open,S=P.send,G=P.getAllResponseHeaders,R=P.getResponseHeader,H=P.setRequestHeader;
 P.open=function(m,u){this.__aj=String(m).toUpperCase()==="POST"&&isAjax(u);this.__args=arguments;return O.apply(this,arguments);};
 P.setRequestHeader=function(){if(this.__fake)return;return H.apply(this,arguments);};
@@ -114,7 +122,7 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 <link rel='stylesheet' id='woocommerce-product-css' href='/wp-content/themes/saarna/assets/css/woocommerce-product.css?ver=1.0.0' media='all' />
 <link rel='stylesheet' id='slick-css-css' href='/wp-content/themes/saarna/assets/js/slick/slick.css?ver=1.0.0' media='all' />
 <link rel='stylesheet' id='theme-style-css' href='/wp-content/themes/saarna/style.css?ver=1.0.0' media='all' />
-<style type="text/css">@font-face {font-family:'Archivo';font-style:normal;font-weight:100 900;src:url(/cf-fonts/v/archivo/5.2.8/latin-ext/wght/normal.woff2);unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;font-display:swap;}@font-face {font-family:'Archivo';font-style:normal;font-weight:100 900;src:url(/cf-fonts/v/archivo/5.2.8/vietnamese/wght/normal.woff2);unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;font-display:swap;}@font-face {font-family:'Archivo';font-style:normal;font-weight:100 900;src:url(/cf-fonts/v/archivo/5.2.8/latin/wght/normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;font-display:swap;}@font-face {font-family:'Archivo';font-style:italic;font-weight:100 900;src:url(/cf-fonts/v/archivo/5.2.8/vietnamese/wght/italic.woff2);unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;font-display:swap;}@font-face {font-family:'Archivo';font-style:italic;font-weight:100 900;src:url(/cf-fonts/v/archivo/5.2.8/latin/wght/italic.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;font-display:swap;}@font-face {font-family:'Archivo';font-style:italic;font-weight:100 900;src:url(/cf-fonts/v/archivo/5.2.8/latin-ext/wght/italic.woff2);unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;font-display:swap;}</style>
+<style type="text/css">@font-face {font-family:'Archivo';font-style:normal;font-weight:100 900;src:url(/cf-fonts/v/archivo/5.2.8/latin-ext/wght/normal.woff2);unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;font-display:swap;}@font-face {font-family:'Archivo';font-style:normal;font-weight:100 900;src:url(/cf-fonts/v/archivo/5.2.8/vietnamese/wght/normal.woff2);unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;font-display:swap;}@font-face {font-family:'Archivo';font-style:normal;font-weight:100 900;src:url(/cf-fonts/v/archivo/5.2.8/latin/wght/normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;font-display:swap;}@font-face {font-family:'Archivo';font-style:italic;font-weight:100 900;src:url(/cf-fonts/v/archivo/5.2.8/latin-ext/wght/italic.woff2);unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;font-display:swap;}@font-face {font-family:'Archivo';font-style:italic;font-weight:100 900;src:url(/cf-fonts/v/archivo/5.2.8/vietnamese/wght/italic.woff2);unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;font-display:swap;}@font-face {font-family:'Archivo';font-style:italic;font-weight:100 900;src:url(/cf-fonts/v/archivo/5.2.8/latin/wght/italic.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;font-display:swap;}</style>
 <link rel='stylesheet' id='general-sans-font-css' href='/wp-content/themes/saarna/assets/scss/fonts.css?ver=7.1.4' media='all' />
 <link rel='stylesheet' id='nav-menu-css' href='/wp-content/themes/saarna/core/nav-menu/style.css?ver=7.1.4' media='all' />
 <link rel='stylesheet' id='bootstrap-css' href='/wp-content/themes/saarna/assets/css/bootstrap.min.css?ver=7.1.4' media='all' />
@@ -929,7 +937,7 @@ Electronic versions of training materials (scoring manuals, exercises, etc.) wil
                                                                             <span class="info-label">Presenter Email</span>
                                                                         </div>
                                                                         <div class="info-content">
-                                                                            <span class="info-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="214c4040484a440f49444d4c545261524040534f400f4e5346">[email&#160;protected]</a></span>
+                                                                            <span class="info-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="274a46464e4c42094f424b4a52546754464655494609485540">[email&#160;protected]</a></span>
                                                                         </div>
                                                                     </div>
                                                                 
@@ -1045,9 +1053,9 @@ Electronic versions of training materials (scoring manuals, exercises, etc.) wil
             <input type='hidden' class='gform_hidden' name='is_submit_1' value='1' />
             <input type='hidden' class='gform_hidden' name='gform_submit' value='1' />
             
-            <input type='hidden' class='gform_hidden' name='gform_currency' data-currency='USD' value='sxoG2UQ6qDrgeqS07bkj6u+5IJkHVsPkK9Qh02xwU+clHusQx5zzJhAW8p8fCrgNBQsFLIoennfNJbQm50j79fXAeOsAvUmW3PtY+266GCuJdnc=' />
+            <input type='hidden' class='gform_hidden' name='gform_currency' data-currency='USD' value='Qj9iRUzcSuja2OZCqDnvYmRS+hK1/kaZDsqlOTI113TtB4HypDkMUFVHQ3B00oZE8h2KEsTLPPv0tUy9nS8MbaeslR7ows3w1SkIj2/eWswVgfc=' />
             <input type='hidden' class='gform_hidden' name='gform_unique_id' value='' />
-            <input type='hidden' class='gform_hidden' name='state_1' value='WyJ7XCIyXCI6W1wiY2M3ZDk1NDJlZDNiYjNkNzM1NzY3Yjk4OGFkMmFjYmNcIixcIjliYjlhNmU0YjZlYmRlMjc3MzIzZmE4Yzg2MDZiY2Q1XCJdLFwiZ2Zvcm1fc3VibWlzc2lvbl9tZXRob2RcIjpbXCI4M2Y4ZGRhNzhlM2U3ZTJkMzkyMWEzOTQ3MzU1YTA0NFwiLFwiYmM1ZTA0NDEwNWVmZWQ4ZDViZjk1NjI5NDRkYjlhZDRcIixcIjZmYmViZDZhZjBkYmU1Y2MzNmJiNjEwNWIwNzk0MDMxXCJdLFwiZ2Zvcm1fdGhlbWVcIjpcImNhNTQ0YmY4OGM3NTcwM2NhM2ZiZDg3MzRiM2EzYjQzXCIsXCJnZm9ybV9zdHlsZV9zZXR0aW5nc1wiOlwiZTkxYjhiYjZjNDU5ZmVmYWVlNGI0ZThjZjRmNzA0ZTZcIixcImZvcm1faWRcIjpcIjU4ZjQ4NmRmZjQ1MzY5OTk5ZDYyYTRjMTk5YmMwMzVhXCIsXCJ1cmxcIjpcIjQwMjNiMjkyNDYyNzU1NjdlODM5MTg5NjQxMmY2ZTYzXCIsXCJzdGF0ZV90aW1lc3RhbXBcIjpcIjEyYWU5YzU3YjgzNTVhNTFlM2MzMzlmZTZlZmI4NmU2XCJ9IiwiNDQ0NDFiMWJmNTQ1NGI0OGQ2MmVlYzg0YWQxM2Q4ZmUiLDE3OTQ1MDM3NjJd' />
+            <input type='hidden' class='gform_hidden' name='state_1' value='WyJ7XCIyXCI6W1wiY2M3ZDk1NDJlZDNiYjNkNzM1NzY3Yjk4OGFkMmFjYmNcIixcIjliYjlhNmU0YjZlYmRlMjc3MzIzZmE4Yzg2MDZiY2Q1XCJdLFwiZ2Zvcm1fc3VibWlzc2lvbl9tZXRob2RcIjpbXCI4M2Y4ZGRhNzhlM2U3ZTJkMzkyMWEzOTQ3MzU1YTA0NFwiLFwiYmM1ZTA0NDEwNWVmZWQ4ZDViZjk1NjI5NDRkYjlhZDRcIixcIjZmYmViZDZhZjBkYmU1Y2MzNmJiNjEwNWIwNzk0MDMxXCJdLFwiZ2Zvcm1fdGhlbWVcIjpcImNhNTQ0YmY4OGM3NTcwM2NhM2ZiZDg3MzRiM2EzYjQzXCIsXCJnZm9ybV9zdHlsZV9zZXR0aW5nc1wiOlwiZTkxYjhiYjZjNDU5ZmVmYWVlNGI0ZThjZjRmNzA0ZTZcIixcImZvcm1faWRcIjpcIjU4ZjQ4NmRmZjQ1MzY5OTk5ZDYyYTRjMTk5YmMwMzVhXCIsXCJ1cmxcIjpcIjQwMjNiMjkyNDYyNzU1NjdlODM5MTg5NjQxMmY2ZTYzXCIsXCJzdGF0ZV90aW1lc3RhbXBcIjpcIjQ0OWVhOTQxMmNlM2I1YmFlYTQ3Njg3NjljYjg1MjdjXCJ9IiwiOWMxZTdhNzAwNWRmN2RiZTVhYTEwODNlNDU3ZmFjZmQiLDE3OTQ1MTk3NjFd' />
             <input type='hidden' autocomplete='off' class='gform_hidden' name='gform_target_page_number_1' id='gform_target_page_number_1' value='0' />
             <input type='hidden' autocomplete='off' class='gform_hidden' name='gform_source_page_number_1' id='gform_source_page_number_1' value='1' />
             <input type='hidden' name='gform_field_values' value='' />
@@ -1108,7 +1116,7 @@ gform.initializeOnLoaded( function() {jQuery('#gform_ajax_frame_1').on('load',fu
 <a href="tel:+1 (855) 955-DATA">+1 (855) 955-DATA</a>, (<a href="tel:855-955-3282">855-955-3282</a>)</p>
 <p><strong>International Calls (Tax Applied)</strong><br />
 <a href="tel:+1 (234) 567-9474">+1 (234) 567-9474</a></p>
-<p><a href="/cdn-cgi/l/email-protection#741d1a121b34071515061a155a1b0613"><span class="__cf_email__" data-cfemail="dab3b4bcb59aa9bbbba8b4bbf4b5a8bd">[email&#160;protected]</span></a></p>
+<p><a href="/cdn-cgi/l/email-protection#3d54535b527d4e5c5c4f535c13524f5a"><span class="__cf_email__" data-cfemail="ddb4b3bbb29daebcbcafb3bcf3b2afba">[email&#160;protected]</span></a></p>
 <p>&nbsp;</p>
 							</div>
 						
@@ -1173,7 +1181,7 @@ gform.initializeOnLoaded( function() {jQuery('#gform_ajax_frame_1').on('load',fu
 <script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/5f7d253bef7f1e19277c79f5a/35136d545a1ee690015b63764.js");</script>        <script type="text/javascript">
         window.mcPixel = window.mcPixel || {};
         window.mcPixel._handled = {};
-        window.mcPixel.cartId = 't_f02d33261b401b42820ff8a0d1fdeb';
+        window.mcPixel.cartId = 't_07e2c292f43ba62273bf9b7bd58138';
         window.mcPixel.parentMap = {};
                 window.mcPixel.data = {"product":{"id":"10495","productId":"10495","title":"Static-99R Training - October 2026","price":350,"currency":"CAD","sku":"","imageUrl":"","productUrl":"/product/static-99r-training-october-2026/","vendor":"","categories":["English","Trainings"]},"events":["PRODUCT_VIEWED"]};
                 </script>
@@ -1383,7 +1391,7 @@ var e="script#wp-emoji-settings",t=document.querySelector(e);if(!(t instanceof H
 //# sourceURL=/wp-includes/js/wp-emoji-loader.min.js
 </script>
 <script type="application/json" fncls="fnparams-dede7cc5-15fd-4c75-a9f4-36c430ee3a99">
-	{"f":"7cc6b5146748429a97071139ba041716","s":"_10495","sandbox":false}</script>
+	{"f":"084ec8d24b254975bec8efa48fafe500","s":"_10495","sandbox":false}</script>
 <script>
 gform.initializeOnLoaded( function() { jQuery(document).on('gform_post_render', function(event, formId, currentPage){if(formId == 1) {if(typeof Placeholders != 'undefined'){
                         Placeholders.enable();
@@ -1393,4 +1401,4 @@ gform.initializeOnLoaded( function() { jQuery(document).on('gform_post_render', 
 gform.initializeOnLoaded( function() {jQuery(document).trigger("gform_pre_post_render", [{ formId: "1", currentPage: "1", abort: function() { this.preventDefault(); } }]);        if (event && event.defaultPrevented) {                return;        }        const gformWrapperDiv = document.getElementById( "gform_wrapper_1" );        if ( gformWrapperDiv ) {            const visibilitySpan = document.createElement( "span" );            visibilitySpan.id = "gform_visibility_test_1";            gformWrapperDiv.insertAdjacentElement( "afterend", visibilitySpan );        }        const visibilityTestDiv = document.getElementById( "gform_visibility_test_1" );        let postRenderFired = false;        function triggerPostRender() {            if ( postRenderFired ) {                return;            }            postRenderFired = true;            gform.core.triggerPostRenderEvents( 1, 1 );            if ( visibilityTestDiv ) {                visibilityTestDiv.parentNode.removeChild( visibilityTestDiv );            }        }        function debounce( func, wait, immediate ) {            var timeout;            return function() {                var context = this, args = arguments;                var later = function() {                    timeout = null;                    if ( !immediate ) func.apply( context, args );                };                var callNow = immediate && !timeout;                clearTimeout( timeout );                timeout = setTimeout( later, wait );                if ( callNow ) func.apply( context, args );            };        }        const debouncedTriggerPostRender = debounce( function() {            triggerPostRender();        }, 200 );        if ( visibilityTestDiv && visibilityTestDiv.offsetParent === null ) {            const observer = new MutationObserver( ( mutations ) => {                mutations.forEach( ( mutation ) => {                    if ( mutation.type === 'attributes' && visibilityTestDiv.offsetParent !== null ) {                        debouncedTriggerPostRender();                        observer.disconnect();                    }                });            });            observer.observe( document.body, {                attributes: true,                childList: false,                subtree: true,                attributeFilter: [ 'style', 'class' ],            });        } else {            triggerPostRender();        }    } );
 </script>
 </body>
-</html>
+</html><!-- Cache Enabler by KeyCDN @ Thu, 12 Nov 2026 21:42:41 GMT (https-index.html) -->
